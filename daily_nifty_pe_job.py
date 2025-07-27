@@ -35,7 +35,7 @@ response = requests.post(url, headers=headers, json=payload, timeout=15)
 # Send POST request
 if response.status_code == 200:
     result = response.json()
-    print(result)
+    print('Total Records fetched from nse api: ', len(result['d']))
     try:
         data = json.loads(result["d"])  # Extract inner JSON string
     except Exception as e:
