@@ -3,28 +3,30 @@ import numpy as np
 import requests
 
 def save_bulk_csv_file():
-    # Set URL for bulk deals
     url = "https://nsearchives.nseindia.com/content/equities/bulk.csv"
 
-    # Set headers to mimic browser
+    # Initial headers for session
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-        "Content-Type": "application/json; charset=utf-8",
-        "Accept": "*/*",
-        "Referer": "https://www.nseindia.com/market-data/large-deals",
-        "Origin": "https://www.nseindia.com",
+        "Referer": "https://www.nseindia.com/",
     }
 
-    response = requests.get(url, headers=headers, timeout=10)
+    with requests.Session() as session:
+        session.headers.update(headers)
 
-    if response.status_code == 200:
-        filename = f"bulk.csv"
-        with open(filename, "w", newline="", encoding="utf-8") as f:
-            f.write(response.text)
-        print(f"✅ Saved Bulk Deals to `{filename}`")
-    else:
-        print(f"❌ Request failed: {response.status_code}")
-        print("Response:", response.text)
+        # First hit to get cookies and set session
+        _ = session.get("https://www.nseindia.com", timeout=10)
+
+        # Now fetch the actual CSV
+        response = session.get(url, timeout=10)
+
+        if response.status_code == 200:
+            with open("bulk.csv", "w", newline="", encoding="utf-8") as f:
+                f.write(response.text)
+            print("✅ Saved Bulk Deals to `bulk.csv`")
+        else:
+            print(f"❌ Request failed: {response.status_code}")
+            print("Response:", response.text)
 
 def prepare_data():
     df = pd.read_csv("bulk.csv")
@@ -44,6 +46,7 @@ def prepare_data():
 
 
 save_bulk_csv_file()
+
 
 
 
