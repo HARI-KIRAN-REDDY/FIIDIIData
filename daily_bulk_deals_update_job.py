@@ -26,9 +26,24 @@ def save_bulk_csv_file():
         print(f"❌ Request failed: {response.status_code}")
         print("Response:", response.text)
 
+def prepare_data():
+    df = pd.read_csv("bulk.csv")
+    df.columns = df.columns.str.strip()
 
+
+    df['Price'] = df['Trade Price / Wght. Avg. Price']
+    df['Quantity'] = df['Quantity Traded']
+
+    df['Trade Value'] = np.where(df['Buy/Sell'] == 'BUY',
+                                 df['Price'] * df['Quantity'],
+                                 df['Price'] * df['Quantity']*-1)/10000000
+
+    result = round(df.groupby('Symbol', as_index=False)['Trade Value'].sum(),2)
+
+    result[result['Trade Value']>=2].to_csv('bulk.csv', index = False)
 
 
 save_bulk_csv_file()
+
 
 
