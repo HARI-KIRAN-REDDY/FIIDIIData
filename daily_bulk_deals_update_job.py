@@ -17,14 +17,14 @@ def save_bulk_csv_file():
 
     response = requests.get(url, headers=headers, timeout=10)
 
-    # if response.status_code == 200:
-    #     filename = f"bulk.csv"
-    #     with open(filename, "w", newline="", encoding="utf-8") as f:
-    #         f.write(response.text)
-    #     print(f"✅ Saved Bulk Deals to `{filename}`")
-    # else:
-    #     print(f"❌ Request failed: {response.status_code}")
-    #     print("Response:", response.text)
+    if response.status_code == 200:
+        filename = f"bulk.csv"
+        with open(filename, "w", newline="", encoding="utf-8") as f:
+            f.write(response.text)
+        print(f"✅ Saved Bulk Deals to `{filename}`")
+    else:
+        print(f"❌ Request failed: {response.status_code}")
+        print("Response:", response.text)
 
 def prepare_data():
     df = pd.read_csv("bulk.csv")
@@ -44,6 +44,7 @@ def prepare_data():
 
 
 save_bulk_csv_file()
+
 
 
 
