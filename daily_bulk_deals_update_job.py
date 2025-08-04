@@ -1,16 +1,18 @@
-import pandas as pd
-import numpy as np
-from requests_html import HTMLSession
+import requests
 
 def save_bulk_csv_file():
-    session = HTMLSession()
     url = "https://nsearchives.nseindia.com/content/equities/bulk.csv"
 
-    # Make initial request to nseindia.com to set cookies
-    session.get("https://www.nseindia.com", timeout=10)
+    headers = {
+        "Content-Type": "application/json; charset=utf-8",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+        "Referer": "https://www.niftyindices.com/reports/historical-data",
+        "Origin": "https://www.niftyindices.com",
+        "Accept": "*/*",
+        "X-Requested-With": "XMLHttpRequest",
+    }
 
-    # Now make actual request
-    response = session.get(url, timeout=10)
+    response = requests.get(url, headers=headers, timeout=10)
 
     if response.status_code == 200:
         with open("bulk.csv", "w", newline="", encoding="utf-8") as f:
@@ -20,28 +22,5 @@ def save_bulk_csv_file():
         print(f"❌ Request failed: {response.status_code}")
         print("Response:", response.text)
 
-def prepare_data():
-    df = pd.read_csv("bulk.csv")
-    df.columns = df.columns.str.strip()
-
-
-    df['Price'] = df['Trade Price / Wght. Avg. Price']
-    df['Quantity'] = df['Quantity Traded']
-
-    df['Trade Value'] = np.where(df['Buy/Sell'] == 'BUY',
-                                 df['Price'] * df['Quantity'],
-                                 df['Price'] * df['Quantity']*-1)/10000000
-
-    result = round(df.groupby('Symbol', as_index=False)['Trade Value'].sum(),2)
-
-    result[result['Trade Value']>=2].to_csv('bulk.csv', index = False)
-
-
-save_bulk_csv_file()
-
-
-
-
-
-
-
+if __name__ == "__main__":
+    save_bulk_csv_file()
