@@ -1,7 +1,11 @@
 import requests
 
 def save_bulk_csv_file():
-    url = "https://nsearchives.nseindia.com/content/equities/bulk.csv"
+    # one day
+    # url = "https://nsearchives.nseindia.com/content/equities/bulk.csv"
+
+    # one week
+    url = "https://nsearchives.nseindia.com/content/equities/bulk.csv?period=1W"
 
     headers = {
         "Content-Type": "application/json; charset=utf-8",
@@ -24,3 +28,4 @@ def save_bulk_csv_file():
 
 if __name__ == "__main__":
     save_bulk_csv_file()
+
