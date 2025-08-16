@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime, timedelta
 
-def save_bulk_csv_file():
+def save_bulk_csv_file(option_type='bulk'):
     # one day
     # url = "https://nsearchives.nseindia.com/content/equities/bulk.csv"
 
@@ -37,5 +37,6 @@ def save_bulk_csv_file():
 
 if __name__ == "__main__":
     save_bulk_csv_file()
+
 
 
