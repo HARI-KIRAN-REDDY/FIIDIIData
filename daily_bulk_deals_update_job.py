@@ -1,11 +1,20 @@
 import requests
+from datetime import datetime, timedelta
 
 def save_bulk_csv_file():
     # one day
     # url = "https://nsearchives.nseindia.com/content/equities/bulk.csv"
 
     # one week
-    url = "https://nsearchives.nseindia.com/content/equities/bulk.csv?period=1W"
+    end_date = datetime.today()
+    start_date = end_date - timedelta(days=7)
+    url = (
+        "https://www.nseindia.com/api/historicalOR/bulk-block-short-deals?"
+        f"optionType={option_type}_deals"
+        f"&from={start_date.strftime('%d-%m-%Y')}"
+        f"&to={end_date.strftime('%d-%m-%Y')}"
+        f"&csv=true"
+    )
 
     headers = {
         "Content-Type": "application/json; charset=utf-8",
@@ -28,4 +37,5 @@ def save_bulk_csv_file():
 
 if __name__ == "__main__":
     save_bulk_csv_file()
+
 
