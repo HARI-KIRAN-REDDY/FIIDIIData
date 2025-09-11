@@ -39,28 +39,31 @@
 #     save_bulk_csv_file()
 
 
-
 import requests
+from datetime import datetime, timedelta
 
 def save_bulk_csv_file():
-    url = "https://nsearchives.nseindia.com/content/equities/bulk.csv"
+    end_date = datetime.today()
+    start_date = end_date - timedelta(days=1)   # 1-day data
+
+    url = (
+        "https://www.nseindia.com/api/historicalOR/bulk-block-short-deals?"
+        f"optionType=bulk_deals&from={start_date.strftime('%d-%m-%Y')}&to={end_date.strftime('%d-%m-%Y')}&csv=true"
+    )
 
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.5",
+        "Accept": "*/*",
         "Referer": "https://www.nseindia.com/",
         "Connection": "keep-alive",
     }
 
-    # Create a session
     session = requests.Session()
     session.headers.update(headers)
 
-    # Step 1: Hit NSE home to get cookies
+    # warmup NSE homepage (to set cookies)
     session.get("https://www.nseindia.com", timeout=10)
 
-    # Step 2: Now request bulk file
     response = session.get(url, timeout=10)
 
     if response.status_code == 200:
@@ -73,5 +76,3 @@ def save_bulk_csv_file():
 
 if __name__ == "__main__":
     save_bulk_csv_file()
-
-
