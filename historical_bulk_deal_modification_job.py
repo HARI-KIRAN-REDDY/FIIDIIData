@@ -13,7 +13,7 @@ response.raise_for_status()
 df = pd.read_csv(StringIO(response.text))
 
 
-df['Quantity Traded'] = np.where(df['Buy/Sell'] == 'BUY',
+df['quantity_traded'] = np.where(df['Buy/Sell'] == 'BUY',
                                  df['Quantity Traded'],
                                  -df['Quantity Traded'])
 df['net_value'] = np.where(df['Buy/Sell'] == 'BUY',
@@ -21,7 +21,7 @@ df['net_value'] = np.where(df['Buy/Sell'] == 'BUY',
                            -df['Trade Price / Wght. Avg. Price']*df["Quantity Traded"])
 
 # NET_VALUE per Date + Symbol + Client Name
-df = df.groupby(["Date", "Symbol", "Client Name"])['net_value'].sum().reset_index()
+df = df.groupby(["Date", "Symbol", "Client Name"])[['net_value', 'quantity_traded']].sum().reset_index()
 
 # filter by threshold
 df = df[df["net_value"].abs() >= THRESHOLD]
