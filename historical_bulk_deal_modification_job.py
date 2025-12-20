@@ -26,7 +26,8 @@ df = df.groupby(["Date", "Symbol", "Client Name"])[['net_value', 'quantity_trade
 # filter by threshold
 df = df[df["net_value"].abs() >= THRESHOLD]
 df['action'] = np.where(df["net_value"] > 0, 'BUY', 'SELL')
-
+df = df.sort_values(by=['Date'])
 
 df.to_csv('modified_historical_bulk_deals.csv', index=False)
+
 
