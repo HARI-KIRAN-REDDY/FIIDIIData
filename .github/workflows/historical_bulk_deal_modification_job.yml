@@ -1,0 +1,44 @@
+name: Fetch Daily Bulk Deals
+
+on:
+  schedule:
+    - cron: '0 16 * * 1-5'   
+  workflow_dispatch:         # Allows manual trigger from GitHub UI
+
+permissions:
+  contents: write            # Needed to push changes
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run script
+        run: python historical_bulk_deal_modification_job.py
+
+      - name: Commit updated CSV
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git add modified_historical_bulk_deals.csv
+          git commit -m "📈 Historical Bulk deals update - $(date '+%Y-%m-%d')" || echo "No changes to commit"
+
+      - name: Push changes to repo
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git remote set-url origin https://x-access-token:${TOKEN}@github.com/${{ github.repository }}
+          git push origin main
