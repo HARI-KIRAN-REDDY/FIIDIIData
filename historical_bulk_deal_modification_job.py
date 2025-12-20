@@ -5,7 +5,7 @@ from io import StringIO
 
 
 URL = "https://raw.githubusercontent.com/HARI-KIRAN-REDDY/FIIDIIData/main/historical_bulk.csv"
-THRESHOLD = 2_00_00_000  # 2 Cr
+THRESHOLD = 20000000  # 2 Cr
 
 
 response = requests.get(URL,  timeout=10)
@@ -29,5 +29,6 @@ df['action'] = np.where(df["net_value"] > 0, 'BUY', 'SELL')
 df = df.sort_values(by=['Date'])
 
 df.to_csv('modified_historical_bulk_deals.csv', index=False)
+
 
 
