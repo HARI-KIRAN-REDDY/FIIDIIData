@@ -1,4 +1,4 @@
-name: Fetch Daily Bulk Deals
+name: Historical Buld deals data modification/ preparation/ cleaning
 
 on:
   schedule:
