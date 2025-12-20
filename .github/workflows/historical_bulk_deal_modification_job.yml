@@ -25,6 +25,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install requests
+          pip install numpy
 
       - name: Run script
         run: python historical_bulk_deal_modification_job.py
