@@ -21,8 +21,7 @@ def save_gold_nifty_ratio_csv(option_type='bulk'):
     merged_df['gold_nifty_ratio'] = merged_df['gold_nifty_ratio'].round(1)
     merged_df = merged_df.set_index('Date')
 
-    with open("gold_nifty_ratio.csv", "w", newline="", encoding="utf-8") as f:
-        f.write(response.text)
+    merged_df.to_csv("gold_nifty_ratio.csv")
     print("✅ Saved Gold Nifty Ratio to 'gold_nifty_ratio.csv' file")
 
 if __name__ == "__main__":
