@@ -31,17 +31,20 @@ headers = {
 # url = "https://www.niftyindices.com/Backpage.aspx/getHistoricaldatatabletoString"
 url = "https://www.niftyindices.com/Backpage.aspx/getpepbHistoricaldataDBtoString"
 
-response = requests.post(url, headers=headers, json=payload, timeout=15)
-# Send POST request
-if response.status_code == 200:
+response = requests.post(url, headers=headers, json=payload, timeout=30)
+
+print("Status:", response.status_code)
+print("Content-Type:", response.headers.get("Content-Type"))
+print("Response:", response.text[:500])
+
+response.raise_for_status()
+
+try:
     result = response.json()
-    print('Total Records fetched from nse api: ', len(result['d']))
-    try:
-        data = json.loads(result["d"])  # Extract inner JSON string
-    except Exception as e:
-        print("❌ JSON decode failed:", e)
-        print("Response data:", result)
-        exit(1)
+except requests.exceptions.JSONDecodeError:
+    print("❌ Response is not valid JSON")
+    exit(1)
+
 
     # Save as CSV
     filename = "nifty_pe_pb_div.csv"
