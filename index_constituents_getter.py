@@ -2,7 +2,7 @@ import csv
 import io
 import os
 import time
-from curl_cffi import requests
+from playwright.sync_api import sync_playwright
 
 OUTPUT_CSV_FILE = "index_constituents.csv"
 
@@ -46,60 +46,65 @@ INDEX_SOURCES = {
 
 
 def fetch_and_save_csv(output_path: str = OUTPUT_CSV_FILE) -> None:
-    # Impersonate Chrome browser TLS fingerprint & warm up session cookies
-    session = requests.Session(impersonate="chrome124")
-    session.headers.update({
-        "Accept": "text/csv,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Referer": "https://niftyindices.com",
-    })
-
-    # Warm up cookies on homepage first
-    try:
-        session.get("https://niftyindices.com", timeout=20)
-        time.sleep(1)
-    except Exception as e:
-        print(f"[WARN] Homepage warm-up warning: {e}")
-
     all_rows = []
 
-    for index_key, (index_name, csv_url) in INDEX_SOURCES.items():
-        try:
-            resp = session.get(csv_url, timeout=20)
-            resp.raise_for_status()
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        context = browser.new_context(
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/124.0.0.0 Safari/537.36"
+            )
+        )
+        page = context.new_page()
 
-            text_content = resp.text.lstrip("\ufeff").strip()
-            if text_content.startswith("<"):
-                raise ValueError("Received HTML instead of CSV")
+        # Pass JS security challenge on niftyindices.com first
+        print("Warming up session on niftyindices.com...")
+        page.goto("https://niftyindices.com", wait_until="networkidle", timeout=60000)
+        page.wait_for_timeout(3000)
 
-            reader = csv.DictReader(io.StringIO(text_content))
-            count = 0
+        for index_key, (index_name, csv_url) in INDEX_SOURCES.items():
+            try:
+                # Use context.request which shares all JS-generated browser cookies
+                resp = context.request.get(csv_url, timeout=30000)
+                if not resp.ok:
+                    raise ValueError(f"HTTP {resp.status}")
 
-            for row in reader:
-                isin = (row.get("ISIN Code") or "").strip()
-                series = (row.get("Series") or "").strip()
-                symbol = (row.get("Symbol") or "").strip()
-                company_name = (row.get("Company Name") or "").strip()
+                text_content = resp.text().lstrip("\ufeff").strip()
+                if text_content.startswith("<"):
+                    raise ValueError("Received HTML instead of CSV")
 
-                if series == "EQ" and isin:
-                    all_rows.append({
-                        "index_instrument_key": index_key,
-                        "index": index_name,
-                        "stock_instrument_key": f"NSE_EQ|{isin}",
-                        "trading_symbol": symbol,
-                        "company_name": company_name,
-                        "isin": isin,
-                    })
-                    count += 1
+                reader = csv.DictReader(io.StringIO(text_content))
+                count = 0
 
-            print(f"[SUCCESS] {index_name} -> {count} stocks")
-            time.sleep(0.5)
+                for row in reader:
+                    isin = (row.get("ISIN Code") or "").strip()
+                    series = (row.get("Series") or "").strip()
+                    symbol = (row.get("Symbol") or "").strip()
+                    company_name = (row.get("Company Name") or "").strip()
 
-        except Exception as err:
-            print(f"[ERROR] {index_name} ({csv_url}): {err}")
+                    if series == "EQ" and isin:
+                        all_rows.append({
+                            "index_instrument_key": index_key,
+                            "index": index_name,
+                            "stock_instrument_key": f"NSE_EQ|{isin}",
+                            "trading_symbol": symbol,
+                            "company_name": company_name,
+                            "isin": isin,
+                        })
+                        count += 1
+
+                print(f"[SUCCESS] {index_name} -> {count} stocks")
+                time.sleep(0.3)
+
+            except Exception as err:
+                print(f"[ERROR] {index_name} ({csv_url}): {err}")
+
+        browser.close()
 
     if not all_rows:
-        raise RuntimeError("No records fetched. Existing CSV was not overwritten.")
+        raise RuntimeError("No records fetched from Nifty Indices. Existing CSV was not overwritten.")
 
     output_dir = os.path.dirname(output_path)
     if output_dir:
@@ -119,7 +124,7 @@ def fetch_and_save_csv(output_path: str = OUTPUT_CSV_FILE) -> None:
         writer.writeheader()
         writer.writerows(all_rows)
 
-    print(f"Saved {len(all_rows)} rows to {output_path}")
+    print(f"\nSaved {len(all_rows)} rows to {output_path}")
 
 
 if __name__ == "__main__":
