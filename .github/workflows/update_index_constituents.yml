@@ -1,25 +1,51 @@
-name: Update NSE Index Constituents
+
+name: NSE Indices Constituents
 
 on:
   schedule:
-    - cron: "30 2 1,16 * *"
+    - cron: "30 12 * * 1-5"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  fetch-and-commit:
+  download-indices:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - run: pip install requests
-      - run: python index_constituents_getter.py
-      - run: |
-          git config --local user.email "github-actions[bot]@://github.com"
-          git config --local user.name "github-actions[bot]"
-          git add index_constituents.csv
-          git diff --staged --quiet || (git commit -m "chore: update index_constituents.csv" && git push)
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install requests pandas beautifulsoup4
+
+      - name: Download NSE constituents
+        run: python index_constituents_getter.py
+
+      - name: Commit updated CSV files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add nifty_all_indices.csv failed_indices.csv
+
+          git diff --cached --quiet || \
+            git commit -m "Update NSE index constituents"
+
+          git push
+
+      - name: Upload CSV artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nse-indices-constituents
+          path: |
+            nifty_all_indices.csv
+            failed_indices.csv
+          retention-days: 30
