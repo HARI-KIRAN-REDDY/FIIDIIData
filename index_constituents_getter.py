@@ -8,40 +8,40 @@ OUTPUT_CSV_FILE = "index_constituents.csv"
 
 INDEX_SOURCES = {
     # Broad Market Indices
-    "NSE_INDEX|Nifty 50": ("Nifty 50", "https://nseindia.com"),
-    "NSE_INDEX|Nifty Next 50": ("Nifty Next 50", "https://nseindia.com"),
-    "NSE_INDEX|Nifty 100": ("Nifty 100", "https://nseindia.com"),
-    "NSE_INDEX|Nifty 200": ("Nifty 200", "https://nseindia.com"),
-    "NSE_INDEX|Nifty 500": ("Nifty 500", "https://nseindia.com"),
-    "NSE_INDEX|Nifty Midcap 50": ("Nifty Midcap 50", "https://nseindia.com"),
-    "NSE_INDEX|NIFTY MIDCAP 100": ("Nifty Midcap 100", "https://nseindia.com"),
-    "NSE_INDEX|NIFTY MIDCAP 150": ("Nifty Midcap 150", "https://nseindia.com"),
-    "NSE_INDEX|NIFTY MID SELECT": ("Nifty Midcap Select", "https://nseindia.com"),
-    "NSE_INDEX|NIFTY SMLCAP 50": ("Nifty Smallcap 50", "https://nseindia.com"),
-    "NSE_INDEX|NIFTY SMLCAP 100": ("Nifty Smallcap 100", "https://nseindia.com"),
-    "NSE_INDEX|NIFTY SMLCAP 250": ("Nifty Smallcap 250", "https://nseindia.com"),
+    "NSE_INDEX|Nifty 50": ("Nifty 50", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty Next 50": ("Nifty Next 50", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty 100": ("Nifty 100", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty 200": ("Nifty 200", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty 500": ("Nifty 500", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty Midcap 50": ("Nifty Midcap 50", "https://niftyindices.com"),
+    "NSE_INDEX|NIFTY MIDCAP 100": ("Nifty Midcap 100", "https://niftyindices.com"),
+    "NSE_INDEX|NIFTY MIDCAP 150": ("Nifty Midcap 150", "https://niftyindices.com"),
+    "NSE_INDEX|NIFTY MID SELECT": ("Nifty Midcap Select", "https://niftyindices.com"),
+    "NSE_INDEX|NIFTY SMLCAP 50": ("Nifty Smallcap 50", "https://niftyindices.com"),
+    "NSE_INDEX|NIFTY SMLCAP 100": ("Nifty Smallcap 100", "https://niftyindices.com"),
+    "NSE_INDEX|NIFTY SMLCAP 250": ("Nifty Smallcap 250", "https://niftyindices.com"),
 
     # Sectoral Indices
-    "NSE_INDEX|Nifty Bank": ("Nifty Bank", "https://nseindia.com"),
-    "NSE_INDEX|Nifty Pvt Bank": ("Nifty Private Bank", "https://nseindia.com"),
-    "NSE_INDEX|Nifty PSU Bank": ("Nifty PSU Bank", "https://nseindia.com"),
-    "NSE_INDEX|Nifty Fin Service": ("Nifty Financial Services", "https://nseindia.com"),
-    "NSE_INDEX|Nifty FinSrv25 50": ("Nifty Fin Service 25/50", "https://nseindia.com"),
-    "NSE_INDEX|Nifty IT": ("Nifty IT", "https://nseindia.com"),
-    "NSE_INDEX|Nifty Auto": ("Nifty Auto", "https://nseindia.com"),
-    "NSE_INDEX|Nifty Pharma": ("Nifty Pharma", "https://nseindia.com"),
-    "NSE_INDEX|NIFTY HEALTHCARE": ("Nifty Healthcare", "https://nseindia.com"),
-    "NSE_INDEX|Nifty FMCG": ("Nifty FMCG", "https://nseindia.com"),
-    "NSE_INDEX|Nifty Metal": ("Nifty Metal", "https://nseindia.com"),
-    "NSE_INDEX|Nifty Energy": ("Nifty Energy", "https://nseindia.com"),
-    "NSE_INDEX|NIFTY OIL AND GAS": ("Nifty Oil & Gas", "https://nseindia.com"),
-    "NSE_INDEX|Nifty Realty": ("Nifty Realty", "https://nseindia.com"),
-    "NSE_INDEX|Nifty Media": ("Nifty Media", "https://nseindia.com"),
-    "NSE_INDEX|NIFTY CONSR DURBL": ("Nifty Consumer Durables", "https://nseindia.com"),
-    "NSE_INDEX|Nifty Infra": ("Nifty Infrastructure", "https://nseindia.com"),
-    "NSE_INDEX|Nifty Commodities": ("Nifty Commodities", "https://nseindia.com"),
-    "NSE_INDEX|Nifty PSE": ("Nifty PSE", "https://nseindia.com"),
-    "NSE_INDEX|Nifty MNC": ("Nifty MNC", "https://nseindia.com"),
+    "NSE_INDEX|Nifty Bank": ("Nifty Bank", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty Pvt Bank": ("Nifty Private Bank", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty PSU Bank": ("Nifty PSU Bank", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty Fin Service": ("Nifty Financial Services", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty FinSrv25 50": ("Nifty Fin Service 25/50", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty IT": ("Nifty IT", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty Auto": ("Nifty Auto", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty Pharma": ("Nifty Pharma", "https://niftyindices.com"),
+    "NSE_INDEX|NIFTY HEALTHCARE": ("Nifty Healthcare", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty FMCG": ("Nifty FMCG", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty Metal": ("Nifty Metal", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty Energy": ("Nifty Energy", "https://niftyindices.com"),
+    "NSE_INDEX|NIFTY OIL AND GAS": ("Nifty Oil & Gas", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty Realty": ("Nifty Realty", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty Media": ("Nifty Media", "https://niftyindices.com"),
+    "NSE_INDEX|NIFTY CONSR DURBL": ("Nifty Consumer Durables", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty Infra": ("Nifty Infrastructure", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty Commodities": ("Nifty Commodities", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty PSE": ("Nifty PSE", "https://niftyindices.com"),
+    "NSE_INDEX|Nifty MNC": ("Nifty MNC", "https://niftyindices.com"),
 }
 
 
@@ -96,7 +96,7 @@ def fetch_and_save_csv(output_path: str = OUTPUT_CSV_FILE) -> None:
             print(f"[ERROR] {index_name} ({csv_url}): {err}")
 
     if not all_rows:
-        raise RuntimeError("No records fetched from NSE. Existing CSV was not overwritten.")
+        raise RuntimeError("No records fetched. Existing CSV was not overwritten.")
 
     output_dir = os.path.dirname(output_path)
     if output_dir:
