@@ -1,0 +1,9 @@
+﻿index_name,url,error
+Nifty Private Bank,https://www.niftyindices.com/IndexConstituent/ind_niftyprivatebanklist.csv,"Error tokenizing data. C error: Expected 3 fields in line 8, saw 6
+"
+Nifty India Defence,https://www.niftyindices.com/IndexConstituent/ind_niftyindiadefencelist.csv,"Error tokenizing data. C error: Expected 3 fields in line 8, saw 6
+"
+Nifty Chemicals,https://www.niftyindices.com/IndexConstituent/ind_niftychemicalslist.csv,"Error tokenizing data. C error: Expected 3 fields in line 8, saw 6
+"
+Nifty India Tourism,https://www.niftyindices.com/IndexConstituent/ind_niftyindiatourismlist.csv,"Error tokenizing data. C error: Expected 3 fields in line 8, saw 6
+"
