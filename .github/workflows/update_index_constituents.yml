@@ -23,7 +23,8 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install requests
+        run: pip install requests curl_cffi
+
 
       - name: Run index_constituents_getter.py
         run: python index_constituents_getter.py
