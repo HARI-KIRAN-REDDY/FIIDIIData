@@ -1,0 +1,36 @@
+name: Update NSE Index Constituents
+
+on:
+  schedule:
+    # Runs at 02:30 UTC (08:00 AM IST) on the 1st and 16th of every month
+    - cron: "30 2 1,16 * *"
+  workflow_dispatch: # Allows manual trigger from the GitHub Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run index_constituents_getter.py
+        run: python index_constituents_getter.py
+
+      - name: Commit and push updated CSV
+        run: |
+          git config --local user.email "github-actions[bot]@://github.com"
+          git config --local user.name "github-actions[bot]"
+          git add index_constituents.csv
+          git diff --staged --quiet || (git commit -m "chore: update index_constituents.csv" && git push)
